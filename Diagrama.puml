@@ -1,0 +1,147 @@
+@startuml
+'!define LightBlue
+'!includeurl https://raw.githubusercontent.com/Drakemor/RedDress-PlantUML/master/style.puml
+skinparam groupInheritance 3
+
+class Navio{
+    int x;
+    int y;
+    ----
+    int getX() const;
+    int getY() const;
+}
+
+class FacFrota{
+    facSubmarino submarinoInst;
+    facContratorPedeiro contratorPedeiroInst;
+    facNaviosTanque naviosTanqueInst;
+    facPortaAvioes portaAvioesInst;
+    static AfacFrota* instance;
+}
+Class FacPortaAvioes{
+    PortaAvioes portaAvioesInst;
+}
+
+class PortaAvioes{
+    Navio A;
+    Navio B;
+    Navio C;
+    Navio D;
+    Navio E;
+    -----
+    void setA(int xa, int ya);
+    void setB(int xb, int yb);
+    void setC(int xc, int yc);
+    void setD(int xd, int yd);
+    void setE(int xe, int ye);
+}
+
+class FacSubmarino{
+    Submarino submarinoInst;
+}
+class Submarino{
+    Navio A;
+    Navio B;
+    ------
+    void setA(int xa, int ya);
+    void setB(int xb, int yb);
+}
+
+class FacNaviosTanque{
+    NaviosTanque naviosTanqueInst;
+}
+
+class NaviosTanque{
+    Navio A;
+    Navio B;
+    Navio C;
+    Navio D;
+    -----
+    void setA(int xa, int ya);
+    void setB(int xb, int yb);
+    void setC(int xc, int yc);
+    void setD(int xd, int yd);
+}
+
+class FacContratorpedeiro{
+    Contratorpedeiro contratorPedeiroInst;
+}
+
+class Contratorpedeiro{
+    Navio A;
+    Navio B;
+    Navio C;
+    -----
+    void setA(int xa, int ya);
+    void setB(int xb, int yb);
+    void setC(int xc, int yc);
+}
+
+Navio<--FacFrota
+FacFrota <-- FacPortaAvioes
+FacFrota <-- FacSubmarino
+FacFrota <-- FacNaviosTanque
+FacFrota <-- FacContratorpedeiro
+
+FacPortaAvioes<--PortaAvioes
+FacSubmarino<--Submarino
+FacNaviosTanque<--NaviosTanque
+FacContratorpedeiro<--Contratorpedeiro
+
+
+TabJogo <-- Interface
+
+class Conexao{
+
+}
+
+Interface --> Conexao
+
+class Tabuleiro{
+    bool flag_envia = false;
+    bool flag_recebe = false;
+    QUdpSocket* udpSocket;
+    QUdpSocket* udpSocketServer;
+    QHostAddress IP_Adversario;
+    quint16 Porta_Adversario;
+    void on_pbOK_clicked();
+    void recebeSinal();
+---
+    int checagem(int i);
+    void setIPPort(QHostAddress, quint16);
+    void converte();
+    tabjogo j;
+    int coordenadas[28];
+    QList<QTableWidgetSelectionRange> lista;
+
+}
+class TabJogo{
+    QUdpSocket* udpSocket;
+    QUdpSocket* udpSocketServer;
+    QHostAddress IP_Adversario;
+    quint16 Porta_Adversario;
+    --
+    void setIPPort(QHostAddress, quint16);
+    bool flag;
+    void on_pbAtirar_clicked();
+    void recebeSinal();
+    void on_pbAbandonar_clicked();
+}
+
+PortaAvioes <-- Tabuleiro
+Submarino <-- Tabuleiro
+NaviosTanque <-- Tabuleiro
+Contratorpedeiro <-- Tabuleiro
+
+
+class Interface{
+
+}
+
+TabJogo --> Tabuleiro
+Jogador --> Interface
+
+
+
+
+@enduml
